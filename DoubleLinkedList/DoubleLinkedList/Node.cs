@@ -1,4 +1,10 @@
-﻿namespace DoubleLinkedList
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace DoubleLinkedList
 {
     public class Node
     {
@@ -7,7 +13,7 @@
         public Node prev;
     }
 
-    public class Operation
+    public class LinkedListOperation
     {
         Node head = null;
 
@@ -92,7 +98,7 @@
 
                 if (lastNode.prev == null)
                 {
-                    head = null; 
+                    head = null;
                 }
                 else
                 {
@@ -101,7 +107,44 @@
             }
             else
             {
-                Console.WriteLine("there is nothing in order to delete!");
+                Console.WriteLine("there is nothing to delete!");
+            }
+        }
+
+        public void InsertAfter(int index, int value)
+        {
+            if (!IsNull())
+            {
+                Node tempNode = head;
+                Node newNode = new Node();
+                newNode.value = value;
+
+                while (tempNode.value != index)
+                {
+                    tempNode = tempNode.next;
+
+                    if (tempNode == null)
+                    {
+                        Console.WriteLine("Invalid Input!");
+                        return;
+                    }
+                }
+
+                if (tempNode.next == null)
+                {
+                    InsertAtLast(value);
+                }
+                else
+                {
+                    tempNode.next.prev = newNode;
+                    newNode.next = tempNode.next;
+                    tempNode.next = newNode;
+                    newNode.prev = tempNode.next;
+                }
+            }
+            else
+            {
+                Console.WriteLine("Something went wrong");
             }
         }
 
@@ -115,13 +158,55 @@
             }
             else
             {
+                Console.WriteLine("there is nothing to delete!");
+            }
+        }
+
+        public void DeleteFromMiddle(int popedItemValue)
+        {
+            if (!IsNull())
+            {
+                Node tempNode = head;
+
+                if (popedItemValue == head.value)
+                {
+                    DeleteFromFirst();
+                }
+                else
+                {
+                    while (tempNode.value != popedItemValue)
+                    {
+
+                        tempNode = tempNode.next;
+
+                        if (tempNode == null)
+                        {
+
+                            Console.WriteLine("item not found");
+                            return;
+                        }
+                    }
+
+                    if (tempNode.next == null)
+                    {
+                        tempNode.prev.next = null;
+                    }
+                    else
+                    {
+                        tempNode.prev.next = tempNode.next;
+                        tempNode.next.prev = tempNode.prev;
+                    }
+                }
+            }
+            else
+            {
                 Console.WriteLine("there is nothing in order to delete!");
             }
         }
 
-        public void ClearList()     
+        public void ClearList()
         {
-            if (!IsNull()) 
+            if (!IsNull())
             {
                 head = null;
             }
